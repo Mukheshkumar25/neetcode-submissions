@@ -1,25 +1,26 @@
 class Solution {
 public:
-    vector<int> topKFrequent(vector<int>& nums, int k) {
-        unordered_map<int,int> freq;
-
-        for (int num : nums) {
-            freq[num]++;
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string,vector<string>>groups;
+        for(string s:strs)
+        {
+            vector<int>arr(26,0);
+            for(auto c:s)
+            {
+                arr[c-'a']++;
+            }
+            string key;
+            for(int i : arr)
+            {
+                key += to_string(i) + '#';
+            }
+            groups[key].push_back(s);
         }
-
-        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<>> pq;
-
-        for (auto& [num, count] : freq) {
-            pq.push({count, num});  // frequency first
-            if (pq.size() > k) pq.pop();
+        vector<vector<string>>res;
+        for(auto &pair:groups)
+        {
+            res.push_back(pair.second);
         }
-
-        vector<int> res;
-        while (!pq.empty()) {
-            res.push_back(pq.top().second); // extract number
-            pq.pop();
-        }
-
         return res;
     }
 };
